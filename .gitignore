@@ -221,7 +221,7 @@ outputs/temp/
 *.avi
 *.mov
 doc/*
-*/ja/*
+manim/scripts/ja/*
 # Logs
 prompt/
 *.mp3
