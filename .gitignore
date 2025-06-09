@@ -212,7 +212,6 @@ outputs/temp/
 *.json
 *.xml
 *.xlsx
-*.pdf
 *.png
 *.jpg
 *.jpeg
@@ -220,7 +219,7 @@ outputs/temp/
 *.mp4
 *.avi
 *.mov
-doc/*
+doc/alpha_*
 manim/scripts/ja/*
 # Logs
 prompt/
