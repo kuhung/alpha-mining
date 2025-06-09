@@ -2,6 +2,8 @@
 
 本项目通过 Alpha 策略计算、大语言模型 (LLM) 及 Manim 动画引擎，实现策略研发、评估至可视化的流程。
 
+项目可视化样例：https://www.bilibili.com/video/BV1YC7Hz5EJ6
+
 ## 核心流程
 
 1. **数据准备**: Alpha 策略原始数据位于 `data/` (mock 数据)。
