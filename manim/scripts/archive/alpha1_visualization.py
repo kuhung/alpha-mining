@@ -9,6 +9,7 @@ Alpha#1 因子可视化脚本 (Manim Community v0.19.0)
 
 2. 渲染并清理缓存 (推荐使用绝对路径以避免错误):
 manim -pqh alpha1_visualization.py Alpha1Visualization -o /Users/kuhung/roy/alpha-mining/manim/outputs/Alpha1Visualization.mp4 --flush_cache
+manim -qk alpha1_visualization.py Alpha1Visualization -o /Users/kuhung/roy/alpha-mining/manim/outputs/Alpha1Visualization.mp4
 
    (请将 YOUR_ABSOLUTE_PATH_TO_PROJECT 替换为您项目的实际绝对路径, 例如 /Users/username/my_project)
 
@@ -232,10 +233,10 @@ class Alpha1Visualization(Scene):
                  FadeOut(example2), FadeOut(calc2))
     
     def show_step3(self, title):
-        step3_title = Text("步骤3: 时间序列最大值 (Ts_ArgMax)", font_size=32, color=ORANGE)
+        step3_title = Text("步骤3: 时间序列最大值位置 (Ts_ArgMax)", font_size=32, color=ORANGE)
         step3_title.next_to(title, DOWN, buff=0.5)
         
-        description = Text("找出过去5天SignedPower值中的最大值", font_size=24)
+        description = Text("找出过去5天SignedPower值达到最大值的位置（相对天数）", font_size=24)
         description.next_to(step3_title, DOWN, buff=0.3)
         
         # 创建时间序列图表
@@ -243,13 +244,13 @@ class Alpha1Visualization(Scene):
         values_text.next_to(description, DOWN, buff=0.3)
         
         values = Text(
-            "01-21: 10000 (示例)\n01-22: 10100 (示例)\n01-23: 10200 (示例)\n01-24: 10383.61\n01-25: 0.000225",
+            "01-21: 9000.0\n01-22: 9500.0\n01-23: 9800.0\n01-24: 10383.61 (最大值)\n01-25: 0.000225",
             font_size=18,
             line_spacing=1.2
         )
         values.next_to(values_text, DOWN, buff=0.2)
         
-        result_text = Text("Ts_ArgMax = 10383.61 (最大值)", font_size=20, color=YELLOW)
+        result_text = Text("Ts_ArgMax = 1 (最大值出现在1天前)", font_size=20, color=YELLOW)
         result_text.next_to(values, DOWN, buff=0.3)
         
         self.play(Write(step3_title))
@@ -260,13 +261,14 @@ class Alpha1Visualization(Scene):
         self.wait(3)
         
         self.play(FadeOut(step3_title), FadeOut(description),
-                 FadeOut(values_text), FadeOut(values), FadeOut(result_text))
+                 FadeOut(values_text), FadeOut(values),
+                 FadeOut(result_text))
     
     def show_step4(self, title):
         step4_title = Text("步骤4: 排名计算", font_size=32, color=ORANGE)
         step4_title.next_to(title, DOWN, buff=0.5)
         
-        description = Text("对所有资产的Ts_ArgMax值进行排名 (百分位)", font_size=24)
+        description = Text("对所有资产的Ts_ArgMax值（位置）进行排名 (百分位)", font_size=24)
         description.next_to(step4_title, DOWN, buff=0.3)
         
         ranking_data = Text(

@@ -9,12 +9,12 @@ def signed_power(series, exponent):
 
 def ts_arg_max(series, window):
     """
-    For each day, find the value in the series that was the maximum in the preceding 'window' days.
-    Note: This interpretation of Ts_ArgMax returns the *value* that caused the argmax,
-          not the index itself, which aligns better with typical alpha factor construction.
-          If the original intent was the index, the logic would need adjustment.
+    对每一天，返回过去window天内最大值出现的位置（0为今天，1为昨天，依此类推）。
     """
-    return series.rolling(window=window, min_periods=1).max()
+    def argmax_pos(x):
+        # x为长度window的Series
+        return window - 1 - np.argmax(x.values[::-1])
+    return series.rolling(window=window, min_periods=1).apply(argmax_pos, raw=False)
 
 
 def calculate_alpha1(df, stddev_window=20, ts_argmax_window=5):
@@ -22,6 +22,7 @@ def calculate_alpha1(df, stddev_window=20, ts_argmax_window=5):
     Calculates Alpha#1 based on the given formula.
 
     Alpha#1: (rank(Ts_ArgMax(SignedPower(((returns < 0) ? stddev(returns, 20) : close), 2.), 5)) - 0.5)
+    其中 Ts_ArgMax 返回最大值出现的相对天数（0为今天，1为昨天...）
     """
     # Ensure data is sorted by date for rolling calculations
     df = df.sort_values(by=['asset_id', 'date'])
@@ -41,9 +42,8 @@ def calculate_alpha1(df, stddev_window=20, ts_argmax_window=5):
     # Fill NaNs that might result from signed_power if conditional_value was NaN (e.g. early stddev)
     df['signed_power_value'] = df['signed_power_value'].fillna(0)
 
-
     # Ts_ArgMax(SignedPower_value, 5)
-    # We apply ts_arg_max per asset
+    # 返回最大值出现的相对天数
     df['ts_argmax_value'] = df.groupby('asset_id')['signed_power_value'].transform(
         lambda x: ts_arg_max(x, window=ts_argmax_window)
     )
