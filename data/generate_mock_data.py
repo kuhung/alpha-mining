@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 
-def generate_data(num_assets=5, num_days=100):
+def generate_data(num_assets=5, num_days=300):
     """
     Generates mock financial data for multiple assets.
 
@@ -14,7 +14,7 @@ def generate_data(num_assets=5, num_days=100):
         pandas.DataFrame: DataFrame with columns ['date', 'asset_id', 'open', 'high', 'low', 'close', 'volume', 'vwap', 'returns'].
     """
     data = []
-    start_date = datetime(2025, 1, 1)
+    start_date = datetime(2024, 6, 1)
 
     for asset_idx in range(num_assets):
         asset_id = f"asset_{asset_idx + 1}"
@@ -89,7 +89,7 @@ def generate_data(num_assets=5, num_days=100):
     return df
 
 if __name__ == "__main__":
-    mock_df = generate_data(num_assets=5, num_days=100)
+    mock_df = generate_data(num_assets=5, num_days=300)
     mock_df.to_csv("mock_data.csv", index=False)
     print("mock_data.csv generated successfully with open, high, low, close, volume, vwap and returns data.")
     print("\nFirst 5 rows of generated data:")

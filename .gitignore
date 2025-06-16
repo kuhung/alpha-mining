@@ -249,3 +249,4 @@ venv-*/
 # Archives - do not commit
 alpha/archive/
 manim/scripts/archive/ 
+process/*
